@@ -36,10 +36,18 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({
-      imageUrl: this.state.input
+      imageUrl: this.state.input,
     });
-    classifyImage(this.state.imageUrl);
+    console.log(this.state.imageUrl);
+    
   };
+
+  componentDidUpdate(prevProps,prevState){
+    console.log(this.state.imageUrl);
+    if (prevState.imageUrl !== this.state.imageUrl) {
+      classifyImage(this.state.imageUrl);
+    }
+  }
 
   render() {
     return (
@@ -52,7 +60,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        <FaceRecognition imageUrl={this.state.imageUrl}/>
+        <FaceRecognition imageUrl={this.state.imageUrl} />
       </div>
     );
   }
