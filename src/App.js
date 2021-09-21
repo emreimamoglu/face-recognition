@@ -1,10 +1,12 @@
-import Navigation from "./Components/Navigation/Navigation";
-import Logo from "./Components/Logo/Logo";
-import ImageLinkForm from "./Components/ImageLinkForm/ImageLinkForm";
-import Rank from "./Components/Rank/Rank";
+import Navigation from "./components/navigation/Navigation";
+import Logo from "./components/logo/Logo";
+import ImageLinkForm from "./components/imageLinkForm/ImageLinkForm";
+import Rank from "./components/rank/Rank";
 import Particles from "react-particles-js";
 import "./App.css";
-
+import { Component } from "react";
+import { classifyImage } from "./services/service";
+import FaceRecognition from "./components/faceRecognition/FaceRecognition";
 const particleOptions = {
   particles: {
     number: {
@@ -17,17 +19,43 @@ const particleOptions = {
   },
 };
 
-function App() {
-  return (
-    <div className="App">
-      <Particles params={particleOptions} className="particles" />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm />
-      {/* <FaceRecognition /> */}
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      input: "",
+      imageUrl: "",
+    };
+  }
+
+  onInputChange = (event) => {
+    this.setState({
+      input: event.target.value,
+    });
+  };
+
+  onButtonSubmit = () => {
+    this.setState({
+      imageUrl: this.state.input
+    });
+    classifyImage(this.state.imageUrl);
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <Particles params={particleOptions} className="particles" />
+        <Navigation />
+        <Logo />
+        <Rank />
+        <ImageLinkForm
+          onInputChange={this.onInputChange}
+          onButtonSubmit={this.onButtonSubmit}
+        />
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
+      </div>
+    );
+  }
 }
 
 export default App;
