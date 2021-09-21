@@ -7,6 +7,8 @@ import "./App.css";
 import { Component } from "react";
 import { classifyImage } from "./services/service";
 import FaceRecognition from "./components/faceRecognition/FaceRecognition";
+import Result from "./components/result/Result";
+
 const particleOptions = {
   particles: {
     number: {
@@ -25,6 +27,7 @@ class App extends Component {
     this.state = {
       input: "",
       imageUrl: "",
+      name: "",
     };
   }
 
@@ -38,14 +41,14 @@ class App extends Component {
     this.setState({
       imageUrl: this.state.input,
     });
-    console.log(this.state.imageUrl);
-    
   };
 
-  componentDidUpdate(prevProps,prevState){
-    console.log(this.state.imageUrl);
+  async componentDidUpdate(prevProps, prevState) {
     if (prevState.imageUrl !== this.state.imageUrl) {
-      classifyImage(this.state.imageUrl);
+      let result = await classifyImage(this.state.imageUrl);
+      this.setState({
+        name: result,
+      });
     }
   }
 
@@ -60,6 +63,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
+        <Result celeb={this.state.name} />
         <FaceRecognition imageUrl={this.state.imageUrl} />
       </div>
     );

@@ -1,17 +1,12 @@
 const Clarifai = require("clarifai");
 
-export const classifyImage = (formUrl) => {
+export const classifyImage = async (formUrl) => {
   let app = new Clarifai.App({ apiKey: "ae211d8777dd4a66a87f3a7a005619f8" });
-  console.log("İnside classify : ",formUrl);
-  app.models
-    .predict(
-      { id: "23aa4f9c9767a2fd61e63c55a73790ad" },
-      formUrl
-    )
-    .then(
-      function (response) {
-        console.log(response);
-      },
-      function (err) {}
-    );
+  const res1 = await app.models.predict(
+    { id: "cfbb105cb8f54907bb8d553d68d9fe20" },
+    formUrl
+  );
+  const res2 = await res1.outputs[0].data.concepts[0].name;
+  const res3 = await res2;
+  return res3;
 };
